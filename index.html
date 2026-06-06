@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Footprint Risk Checker</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;600&display=swap');
+
+body {
+    font-family: 'Exo', 'Segoe UI', sans-serif;
+
+    background-image: <img src="img/background dark.jpg">;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    color: #ffffff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 80%;
+    max-width: 700px;
+    margin: 60px auto;
+    background: rgba(138, 214, 239, 0.742);
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(97, 188, 200, 0.4), inset 0 0 10px rgba(102, 204, 255, 0.2);
+    backdrop-filter: blur(6px);
+}
+
+h1 {
+    color: #ecf0f2;
+    text-shadow: 0 0 10px #66ccff, 0 0 20px #9932cc;
+    letter-spacing: 1px;
+}
+
+input[type="text"] {
+    padding: 12px;
+    width: 80%;
+    border-radius: 8px;
+    border: 1px solid #9932cc;
+    background: rgba(108, 136, 61, 0.1);
+    color: #ffffff;
+    font-size: 16px;
+}
+
+input::placeholder {
+    color: #d0c0ff;
+}
+
+button {
+    margin-top: 25px;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #a1c4eb, #e999d6);
+    color: rgb(47, 16, 54);
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 0 15px rgba(153, 50, 204, 0.6);
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #e999d6, #a1c4eb);
+    box-shadow: 0 0 25px rgba(102, 204, 255, 0.9);
+}
+
+.page { display: none; }
+.active { display: block; }
+
+.question {
+    text-align: left;
+    margin: 25px 0;
+    background: rgba(69, 238, 241, 0.415);
+    padding: 15px;
+    border-radius: 10px;
+
+    /* Border */
+    border: 2px solid #6c9cbc;
+
+    /* Glow Effect */
+    box-shadow:
+        0 0 10px rgba(102, 204, 255, 0.4),
+        0 0 20px rgba(143, 211, 255, 0.3);
+}
+
+/* Hide default radio */
+input[type="radio"] { display: none; }
+
+/* Futuristic YES/NO buttons */
+label {
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 25px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #381250;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(102, 204, 255, 0.4);
+    transition: all 0.3s ease;
+    border: 2px solid #6c9cbc;
+}
+
+label:hover {
+    background: rgba(241, 142, 238, 0.6);
+    box-shadow: 0 0 18px rgba(102, 204, 255, 0.7);
+}
+
+input[type="radio"]:checked + label {
+    background: linear-gradient(90deg, #95c1f3, #efa1dd);
+    color: #2b0d38;
+    box-shadow: 0 0 25px rgba(102, 204, 255, 1);
+}
+
+.result-box {
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 25px;
+    box-shadow: 0 0 20px rgba(153, 50, 204, 0.5);
+}
+
+.low { background: rgb(72, 176, 255); border: 1px solid #00aaff; }
+.medium { background: rgba(217, 188, 58, 0.962); border: 1px solid #ffff2e; }
+.high { background: rgba(234, 5, 81, 0.905); border: 1px solid #aa0039; }
+.tips-box{
+    margin-top:25px;
+    padding:20px;
+    border-radius:15px;
+    background:rgba(255,255,255,0.08);
+    text-align:left;
+    box-shadow:0 0 15px rgba(102,204,255,0.3);
+}
+
+.tips-box h2{
+    text-align:center;
+    color:#0e4966;
+}
+
+.tips-box ul{
+    padding-left:20px;
+}
+
+.tips-box li{
+    margin:10px 0;
+    line-height:1.6;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="container page active" id="page1">
+    <h1>Digital Footprint Risk Checker</h1>
+    <p>Enter your nickname:</p>
+    <input type="text" id="nickname" placeholder="Your nickname">
+    <br>
+    <button onclick="startAssessment()">Start Assessment</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="container page" id="page2">
+    <h1>Answer These Questions</h1>
+
+    <!-- 16 Questions -->
+    <div class="question"><p>1. Do you use the same password for multiple accounts?</p>
+        <input type="radio" id="q1yes" name="q1" value="yes"><label for="q1yes">YES</label>
+        <input type="radio" id="q1no" name="q1" value="no"><label for="q1no">NO</label>
+    </div>
+    <div class="question"><p>2. Do you save passwords in your browser without encryption?</p>
+        <input type="radio" id="q2yes" name="q2" value="yes"><label for="q2yes">YES</label>
+        <input type="radio" id="q2no" name="q2" value="no"><label for="q2no">NO</label>
+    </div>
+    <div class="question"><p>3. Do you use 2FA for your accounts?</p>
+        <input type="radio" id="q3yes" name="q3" value="yes"><label for="q3yes">YES</label>
+        <input type="radio" id="q3no" name="q3" value="no"><label for="q3no">NO</label>
+    </div>
+    <div
+class="question"><p>4. Is your social media account public?</p>
+        <input type="radio" id="q4yes" name="q4" value="yes"><label for="q4yes">YES</label>
+        <input type="radio" id="q4no" name="q4" value="no"><label for="q4no">NO</label>
+    </div>
+    <div class="question"><p>5. Have you posted boarding passes, IDs, or house keys online?</p>
+        <input type="radio" id="q5yes" name="q5" value="yes"><label for="q5yes">YES</label>
+        <input type="radio" id="q5no" name="q5" value="no"><label for="q5no">NO</label>
+    </div>
+    <div class="question"><p>6. Do you believe deleting a post means it’s gone forever?</p>
+        <input type="radio" id="q6yes" name="q6" value="yes"><label for="q6yes">YES</label>
+        <input type="radio" id="q6no" name="q6" value="no"><label for="q6no">NO</label>
+    </div>
+    <div class="question"><p>7. Have you clicked on links from unknown senders?</p>
+        <input type="radio" id="q7yes" name="q7" value="yes"><label for="q7yes">YES</label>
+        <input type="radio" id="q7no" name="q7" value="no"><label for="q7no">NO</label>
+    </div>
+    <div class="question"><p>8. Have you opened attachments from suspicious emails?</p>
+        <input type="radio" id="q8yes" name="q8" value="yes"><label for="q8yes">YES</label>
+        <input type="radio" id="q8no" name="q8" value="no"><label for="q8no">NO</label>
+    </div>
+    <div class="question"><p>9. Do you allow apps access to contacts, mic, or camera without checking?</p>
+        <input type="radio" id="q9yes" name="q9" value="yes"><label for="q9yes">YES</label>
+        <input type="radio" id="q9no" name="q9" value="no"><label for="q9no">NO</label>
+    </div>
+    <div class="question"><p>10. Do you often share your live location online?</p>
+        <input type="radio" id="q10yes" name="q10" value="yes"><label for="q10yes">YES</label>
+        <input type="radio" id="q10no" name="q10" value="no"><label for="q10no">NO</label>
+    </div>
+    <div class="question"><p>11. Do you connect to free public WiFi without a VPN?</p>
+        <input type="radio" id="q11yes" name="q11" value="yes"><label for="q11yes">YES</label>
+        <input type="radio" id="q11no" name="q11" value="no"><label for="q11no">NO</label>
+    </div>
+    <div class="question"><p>12. Do you let others use your accounts/devices without logging out?</p>
+        <input type="radio" id="q12yes" name="q12" value="yes"><label for="q12yes">YES</label>
+        <input type="radio" id="q12no" name="q12" value="no"><label for="q12no">NO</label>
+    </div>
+    <div class="question"><p>13. Have you checked if your email was exposed in a breach?</p>
+        <input type="radio" id="q13yes" name="q13" value="yes"><label for="q13yes">YES</label>
+        <input type="radio" id="q13no" name="q13" value="no"><label for="q13no">NO</label>
+    </div>
+    <div class="question"><p>14. Do you notice ads following you after searches?</p>
+        <input type="radio" id="q14yes" name="q14" value="yes"><label for="q14yes">YES</label>
+        <input type="radio" id="q14no" name="q14" value="no"><label for="q14no">NO</label>
+    </div>
+    <div class="question"><p>15. Do you upload selfies often without realizing they train AI?</p>
+        <input type="radio" id="q15yes" name="q15" value="yes"><label for="q15yes">YES</label>
+        <input type="radio" id="q15no" name="q15" value="no"><label for="q15no">NO</label>
+    </div>
+    <div class="question"><p>16. Have you thought about what happens to your accounts after you’re gone?</p>
+        <input type="radio" id="q16yes" name="q16" value="yes"><label for="q16yes">YES</label>
+        <input type="radio" id="q16no" name="q16" value="no"><label for="q16no">NO</label>
+    </div>
+
+    <button onclick="calculateResult()">View Result</button>
+</div>
+
+<!-- PAGE 3 -->
+<!-- PAGE 3 -->
+<div class="container page" id="page3">
+
+    <h1>Your Result</h1>
+
+    <h2 id="displayName"></h2>
+
+    <div id="resultBox" class="result-box">
+        <h2 id="percentage"></h2>
+        <h2 id="riskLevel"></h2>
+        <p id="recommendation"></p>
+    </div>
+
+    <div id="tipsBox" class="tips-box">
+        <h2>💡 Digital Safety Tips</h2>
+        <ul id="tipsList"></ul>
+    </div>
+
+</div>
+
+<script>
+let userName = "";
+
+function startAssessment() {
+    userName = document.getElementById("nickname").value;
+    if (userName === "") {
+        alert("Please enter your nickname.");
+        return;
+    }
+    document.getElementById("page1").classList.remove("active");
+    document.getElementById("page2").classList.add("active");
+}
+
+function calculateResult() {
+
+    let score = 0;
+
+    for (let i = 1; i <= 16; i++) {
+
+        let answer = document.querySelector(
+            'input[name="q' + i + '"]:checked'
+        );
+
+        if (!answer) {
+            alert("Please answer all questions.");
+            return;
+        }
+
+        if (answer.value === "yes") {
+            score++;
+        }
+    }
+
+    let percentage = Math.round((score / 16) * 100);
+
+    let level = "";
+    let recommendation = "";
+    let boxClass = "";
+    let tips = [];
+
+    if (percentage <= 40) {
+
+        level = "🟢 LOW RISK";
+
+        recommendation =
+        "Excellent! You have good digital habits and a relatively safe digital footprint.";
+
+        boxClass = "result-box low";
+
+        tips = [
+            "Continue using strong and unique passwords.",
+            "Keep Two-Factor Authentication (2FA) enabled.",
+            "Review privacy settings regularly.",
+            "Avoid oversharing personal information.",
+            "Update your apps and devices frequently."
+        ];
+
+    } else if (percentage <= 80) {
+
+        level = "🟡 MEDIUM RISK";
+
+        recommendation =
+        "Your digital footprint shows some risky behaviors. Review your online habits.";
+
+        boxClass = "result-box medium";
+
+        tips = [
+            "Make social media accounts private.",
+            "Avoid sharing your live location online.",
+            "Do not click suspicious links.",
+            "Review app permissions regularly.",
+            "Use different passwords for each account."
+        ];
+
+    } else {
+
+        level = "🔴 HIGH RISK";
+
+        recommendation =
+        "Your digital footprint is highly exposed and may put your privacy at risk.";
+
+        boxClass = "result-box high";
+
+        tips = [
+            "Change passwords immediately and use strong passwords.",
+            "Enable Two-Factor Authentication (2FA).",
+            "Remove sensitive information from public profiles.",
+            "Stop sharing personal documents online.",
+            "Avoid public WiFi without a VPN.",
+            "Review all app permissions and revoke unnecessary access.",
+            "Turn off location sharing on social media."
+        ];
+    }
+
+    document.getElementById("page2").classList.remove("active");
+    document.getElementById("page3").classList.add("active");
+
+    document.getElementById("displayName").innerHTML =
+    "Nickname: " + userName;
+
+    document.getElementById("percentage").innerHTML =
+    "Risk Percentage: " + percentage + "%";
+
+    document.getElementById("riskLevel").innerHTML =
+    level;
+
+    document.getElementById("recommendation").innerHTML =
+    recommendation;
+
+    document.getElementById("resultBox").className =
+    boxClass;
+
+    let tipsList = document.getElementById("tipsList");
+    tipsList.innerHTML = "";
+
+    tips.forEach(function(tip){
+
+        let li = document.createElement("li");
+        li.textContent = tip;
+        tipsList.appendChild(li);
+
+    });
+
+
+    document.getElementById("page2").classList.remove("active");
+    document.getElementById("page3").classList.add("active");
+
+    document.getElementById("displayName").innerHTML = "Nickname: " + userName;
+    document.getElementById("percentage").innerHTML = "Risk Percentage: " + percentage + "%";
+    document.getElementById("riskLevel").innerHTML = level;
+    document.getElementById("recommendation").innerHTML = recommendation;
+    document.getElementById("resultBox").className = boxClass;
+}
+</script>
+
+</body>
+</html>
